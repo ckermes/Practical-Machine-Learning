@@ -35,7 +35,7 @@ cor <- abs(sapply(colnames(training[, -ncol(training)]), function(x) cor(as.nume
 * Fit model with boosting algorithm and 10-fold cross validation to predict `classe` with all other predictors.    
 * Plot accuracy of this model on the scale `[0.9, 1]`.        
 
-```{r boost}
+```{r boost, cache = TRUE}
 set.seed(123)
 boostFit <- train(classe ~ ., method = "gbm", data = training, verbose = F, trControl = trainControl(method = "cv", number = 10))
 ```
@@ -50,15 +50,13 @@ The boosting algorithm generated a good model with __accuracy = 0.997__.
 * Fit model with random forests algorithm and 10-fold cross validation to predict `classe` with all other predictors.    
 * Plot accuracy of the model on the __same scale__ as boosting model.            
 
-```{r rf, eval = F}
+```{r rf, eval = F, cache = TRUE}
 set.seed(123)
 rfFit <- train(classe ~ ., method = "rf", data = training, importance = T, trControl = trainControl(method = "cv", number = 10))
-```
-```{r rf_plot}
+
 rfFit
 plot(rfFit, ylim = c(0.9, 1))
-```
-```{r rf_imp, echo = F}
+
 imp <- varImp(rfFit)$importance
 imp$max <- apply(imp, 1, max)
 imp <- imp[order(imp$max, decreasing = T), ]
